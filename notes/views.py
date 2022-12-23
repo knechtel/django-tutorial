@@ -4,8 +4,15 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.forms import UserCreationForm
+from rest_framework.generics import ListAPIView
+
+from notes.serializers import NotesSerialiazers
 from .models import Notes
 
+
+class NotesList(ListAPIView):
+    queryset = Notes.objects.all()
+    serializer_class = NotesSerialiazers
 
 class SignupView(CreateView):
     form_class = UserCreationForm
