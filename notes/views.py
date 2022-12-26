@@ -9,6 +9,24 @@ from rest_framework.viewsets import ModelViewSet
 from notes.serializers import NotesSerialiazers
 from .models import Notes
 from .serializers import ClientSeriliazers
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view,  permission_classes
+from rest_framework.decorators import authentication_classes
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
+
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def example_view(request, format=None):
+    content = {
+        'user': str(request.user),  # `django.contrib.auth.User` instance.
+        'auth': str(request.auth),  # None
+    }
+    print(request.user)
+    return Response(content)
 
 
 class ClientViewSet(ModelViewSet):
@@ -25,17 +43,23 @@ class ClientViewSet(ModelViewSet):
             return Response(data=_serializer.errors, status=status.HTTP_400_BAD_REQUEST)  # NOQA
 
 
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 class NotesList(ListAPIView):
     queryset = Notes.objects.all()
     serializer_class = NotesSerialiazers
 
 
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 class SignupView(CreateView):
     form_class = UserCreationForm
     template_name = 'notes/register.html'
     success_url = '/smart/login'
 
 
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 class NotesCreate(CreateAPIView):
     serializer_class = NotesSerialiazers
 
@@ -76,7 +100,8 @@ class LoginInterfaceView(LoginView):
     #         return reverse("profile")
 
 
-@login_required(login_url='/smart/login/')
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 def list(request):
     all_notes = Notes.objects.all()
     return render(request, 'notes/notes_list.html', {'notes': all_notes})
