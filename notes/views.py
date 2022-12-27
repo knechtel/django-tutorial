@@ -100,6 +100,7 @@ class LoginInterfaceView(LoginView):
     #         return reverse("profile")
 
 
+@api_view(['GET'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def list(request):
