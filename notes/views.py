@@ -7,7 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from rest_framework.generics import ListAPIView, CreateAPIView
 from rest_framework.viewsets import ModelViewSet
 from notes.serializers import NotesSerialiazers
-from .models import Notes
+from .models import Notes, Client
 from .serializers import ClientSeriliazers
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view,  permission_classes
@@ -110,3 +110,10 @@ def list(request):
 
 def login(request):
     return render(request, 'notes/index.html')
+
+
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+class ClientList(ListAPIView):
+    queryset = Client.objects.all()
+    serializer_class = ClientSeriliazers
