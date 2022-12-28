@@ -6,8 +6,8 @@ from django.views.generic.edit import CreateView
 from django.contrib.auth.forms import UserCreationForm
 from rest_framework.generics import ListAPIView, CreateAPIView
 from rest_framework.viewsets import ModelViewSet
-from notes.serializers import NotesSerialiazers
-from .models import Notes, Client
+from notes.serializers import NotesSerialiazers, EquipmentSeriliazers
+from .models import Notes, Client, Equipment
 from .serializers import ClientSeriliazers
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view,  permission_classes
@@ -15,7 +15,7 @@ from rest_framework.decorators import authentication_classes
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-
+from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, TokenHasScope, OAuth2Authentication
 
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
@@ -48,6 +48,8 @@ class ClientViewSet(ModelViewSet):
 class NotesList(ListAPIView):
     queryset = Notes.objects.all()
     serializer_class = NotesSerialiazers
+    authentication_classes = [OAuth2Authentication, SessionAuthentication]
+
 
 
 @authentication_classes([SessionAuthentication, BasicAuthentication])
@@ -115,5 +117,26 @@ def login(request):
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
 class ClientList(ListAPIView):
+    queryset = Client.objects.all()
+    serializer_class = ClientSeriliazers
+
+
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+class EquipmentList(ListAPIView):
+    queryset = Equipment.objects.all()
+    serializer_class = EquipmentSeriliazers
+
+
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+class EquipmentCreate(CreateAPIView):
+    queryset = Equipment.objects.all()
+    serializer_class = EquipmentSeriliazers
+
+
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+class ClientCreate(CreateAPIView):
     queryset = Client.objects.all()
     serializer_class = ClientSeriliazers
