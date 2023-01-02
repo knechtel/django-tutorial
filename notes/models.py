@@ -14,6 +14,8 @@ class Equipment(models.Model):
     marca = models.TextField()
     modelo = models.TextField()
     serial = models.TextField()
+    data_entrega = models.DateField(null=True)
+    data_entrada = models.DateField(null=True)
     preco = models.DecimalField(max_digits=10, decimal_places=2)
 
 
