@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
-from notes.models import Notes, Client
+from notes.models import Notes, Client, Equipment
 from django.db import models
 
 
@@ -22,4 +22,10 @@ class NotesSerialiazers(serializers.ModelSerializer):
 class ClientSeriliazers(ModelSerializer):
     class Meta:
         model = Client
+        fields = '__all__'
+
+
+class EquipmentSeriliazers(serializers.ModelSerializer):
+    class Meta:
+        model = Equipment
         fields = '__all__'
