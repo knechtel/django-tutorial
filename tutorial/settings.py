@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'notes',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+    'oauth2_provider'
 ]
 
 MIDDLEWARE = [
@@ -136,7 +137,13 @@ LOGIN_REDIRECT_URL = '/smart/notes'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-
+        #'rest_framework.authentication.BasicAuthentication',
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
     ]
+}
+
+OAUTH2_PROVIDER = {
+    # this is the list of available scopes
+
+    'ACCESS_TOKEN_EXPIRE_SECONDS': 36000,
 }
